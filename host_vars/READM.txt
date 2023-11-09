@@ -1,0 +1,1 @@
+ create per hostname,dnc, IP per server type Ubuntu, Centos and the correct variable per plateform

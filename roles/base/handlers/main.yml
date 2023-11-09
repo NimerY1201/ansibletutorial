@@ -1,0 +1,4 @@
+- name: restsart_sshd
+  service:
+    name: sshd
+    state: restarted

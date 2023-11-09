@@ -1,0 +1,35 @@
+- name: install apache & php packages
+  tags: apache,httpd,php
+  package:
+    name:
+      - "{{apache_package_name}}"
+      - "{{php_package_name}}"
+    state: latest
+
+- name: start & enable apache service
+  tags:apache,httpd
+  service:
+    name "{{apache_service}}"
+    state: started
+    enabled: yes
+
+- name: change e-mail address for admin
+  tags: apache,centos,httpd
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regex: '^ServerAdmin'
+    line: serviceAdmin somebody@somewhere.next
+  when: ansible_distribution == "CentOS"
+  register: apache
+
+- name restart httpd
+  tags: apache,httpd
+  service:
+    name "{{apache_service}}"
+    state: started
+  when: apache.changed
+
+- name: copy file for the site
+  tags: apache,apache2,httpd
+  copy:
+    src: default_site.html

@@ -1,0 +1,16 @@
+- name: add ssh key for tiger
+  tags: always
+  authorized_key:
+    user:tiger
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEPYX2BkpSq37jVWQP7H0r7uB2OCC+5633kMbV/x02n6 ansible"
+
+- name: generate sshd_config file from template
+  tags: ssh
+  template:
+    src: "{{ssh_template_file}}"
+    dst: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart_sshd
+ 
